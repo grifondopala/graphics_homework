@@ -120,7 +120,7 @@ void DrawBSplineConnective(vector<MyPoint>& points, Mat& image, Vec3b color) {
     }
 }
 
-// при floodFill8 границу полигона наискосок перепрыгивало и все внутри закрашивало
+// РїСЂРё floodFill8 РїСЂРё Р·Р°РєСЂР°С€РёРІР°РЅРёРё РІРЅРµС€РЅРµР№ СЃС‚РѕСЂРѕРЅС‹ РїРµСЂРµРїСЂС‹РіРёР»Р° С‡РµСЂРµР· РґРёР°РіРѕРЅР°Р»СЊ РІРЅСѓС‚СЂСЊ РїРѕР»РёРіРѕРЅР°
 void floodFill4(const vector<MyPoint> startPoints, Vec3b background, Vec3b borderColor, int minX, int minY, int maxX, int maxY, Mat& image)
 {
     int dx[4] = { 0, 1, 0, -1 };
