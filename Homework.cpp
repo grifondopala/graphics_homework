@@ -58,7 +58,7 @@ void TestHalftoning() {
 
     saveImage(&image, "test_halftoning_initial.png");
 
-    Mat transformed = halftoning(30, image);
+    Mat transformed = halftoning(20, image);
 
     saveImage(&transformed, "test_halftoning_result.png");
 }

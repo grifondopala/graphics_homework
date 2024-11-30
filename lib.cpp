@@ -221,10 +221,10 @@ void drawPolygonWithNonExterior(const vector<MyPoint>& points, Mat& image, Vec3b
 // halftoning
 
 Mat generateTestImage() {
-    Mat image(600, 1200, CV_8UC3, Scalar(0, 0, 0));
+    Mat image(200, 300, CV_8UC3, Scalar(0, 0, 0));
 
-    for (int y = 0; y < 600; ++y) {
-        for (int x = 600; x < 1200; ++x) {
+    for (int y = 0; y < 200; ++y) {
+        for (int x = 150; x < 300; ++x) {
             image.at<Vec3b>(y, x) = { 255, 255, 255 };
         }
     }
