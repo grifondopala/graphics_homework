@@ -232,13 +232,6 @@ Mat generateTestImage() {
     return image;
 }
 
-Mat createGrayscale(const Mat& image) {
-    Mat gray_image;
-    cvtColor(image, gray_image, COLOR_BGR2GRAY);
-
-    return gray_image;
-}
-
 Mat halftoning(int widthCell, Mat& image) {
     int initialRows = image.rows;
     double aspectRatio = (double)image.cols / image.rows;

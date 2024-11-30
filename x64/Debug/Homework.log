@@ -1,7 +1,11 @@
-﻿  lib.cpp
+﻿  Homework.cpp
+D:\MEPHI\KG\Homework\Homework\Homework\Homework.cpp(93,49): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+D:\MEPHI\KG\Homework\Homework\Homework\Homework.cpp(115,49): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  lib.cpp
 D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(64,11): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
 D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(65,11): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
 D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(110,48): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
 D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(190,81): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(255,30): warning C4244: инициализация: преобразование "double" в "uchar", возможна потеря данных
+D:\MEPHI\KG\Homework\Homework\Homework\lib.cpp(248,30): warning C4244: инициализация: преобразование "double" в "uchar", возможна потеря данных
+  Создание кода...
   Homework.vcxproj -> D:\MEPHI\KG\Homework\Homework\x64\Debug\Homework.exe

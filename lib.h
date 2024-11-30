@@ -47,8 +47,7 @@ vector<MyPoint> drawLine(int x1, int y1, int x2, int y2, Mat& image, Vec3b color
 void drawPolygonWithNonExterior(const vector<MyPoint>& points, Mat& image, Vec3b externalColor, Vec3b insideColor);
 
 // ==============================================
-
-Mat createGrayscale(const Mat& image);
+// halftoning
 
 Mat halftoning(int widthCell, Mat& image);
 
