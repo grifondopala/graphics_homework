@@ -50,6 +50,8 @@ void drawPolygonWithNonExterior(const vector<MyPoint>& points, Mat& image, Vec3b
 
 Mat createGrayscale(const Mat& image);
 
-Mat halftoning(int widthCell, int heightCell, Mat& image);
+Mat halftoning(int widthCell, Mat& image);
+
+Mat generateTestImage();
 
 #endif#pragma once

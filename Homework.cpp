@@ -45,14 +45,22 @@ void BSplineLine() {
     saveImage(&image, "bspline.png");
 }
 
-void Halftoning(string name, int cellWidth, int cellHeight) {
+void Halftoning(string name, int cellWidth) {
     Mat image = loadImage(name + ".jpg");
 
-    Mat grayImage = createGrayscale(image);
-
-    Mat halfImage = halftoning(cellWidth, cellHeight, grayImage);
+    Mat halfImage = halftoning(cellWidth, image);
 
     saveImage(&halfImage, name + ".png");
+}
+
+void TestHalftoning() {
+    Mat image = generateTestImage();
+
+    saveImage(&image, "test_halftoning_initial.png");
+
+    Mat transformed = halftoning(30, image);
+
+    saveImage(&transformed, "test_halftoning_result.png");
 }
 
 void NonExterior() {
@@ -113,9 +121,11 @@ int main()
 {
     BSplineLine();
 
-    Halftoning("dog", 60, 40);
+    Halftoning("dog", 60);
 
-    Halftoning("football", 40, 40);
+    Halftoning("football", 40);
+
+    TestHalftoning();
 
     NonExterior();
 

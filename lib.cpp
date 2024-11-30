@@ -120,7 +120,6 @@ void DrawBSplineConnective(vector<MyPoint>& points, Mat& image, Vec3b color) {
     }
 }
 
-// при floodFill8 при закрашивании внешней стороны перепрыгила через диагональ внутрь полигона
 void floodFill4(const vector<MyPoint> startPoints, Vec3b background, Vec3b borderColor, int minX, int minY, int maxX, int maxY, Mat& image)
 {
     int dx[4] = { 0, 1, 0, -1 };
@@ -144,6 +143,32 @@ void floodFill4(const vector<MyPoint> startPoints, Vec3b background, Vec3b borde
                 if (currentColor != background && currentColor != borderColor) {
                     stack.push_back({ nx, ny });
                 }
+            }
+        }
+    }
+}
+
+void floodFill8(const vector<MyPoint> startPoints, Vec3b background, Vec3b borderColor, Mat& image)
+{
+    int dx[8] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+    int dy[8] = { -1, -1, 0, 1, 1, 1, 0, -1 };
+
+    vector<MyPoint> stack = startPoints;
+    while (!stack.empty()) {
+        MyPoint currentPoint = stack.back();
+        stack.pop_back();
+        Vec3b currentColor = image.at<Vec3b>(currentPoint.y, currentPoint.x);
+        if (currentColor != borderColor) {
+            setPixel(currentPoint.x, currentPoint.y, image, background);
+        }
+        for (int i = 0; i < 8; i++) {
+            int nx = currentPoint.x + dx[i];
+            int ny = currentPoint.y + dy[i];
+
+            Vec3b currentColor = image.at<Vec3b>(ny, nx);
+
+            if (currentColor != background && currentColor != borderColor) {
+                stack.push_back({ nx, ny });
             }
         }
     }
@@ -188,12 +213,24 @@ void drawPolygonWithNonExterior(const vector<MyPoint>& points, Mat& image, Vec3b
 
     floodFill4({ p1, p2, p3, p4 }, externalColor, insideColor, minX, minY, maxX, maxY, image);
 
-    floodFill4(border, insideColor, externalColor, minX, minY, maxX, maxY, image);
+    floodFill8(border, insideColor, externalColor, image);
 }
 
 
 // ========================================================================================
 // halftoning
+
+Mat generateTestImage() {
+    Mat image(600, 1200, CV_8UC3, Scalar(0, 0, 0));
+
+    for (int y = 0; y < 600; ++y) {
+        for (int x = 600; x < 1200; ++x) {
+            image.at<Vec3b>(y, x) = { 255, 255, 255 };
+        }
+    }
+
+    return image;
+}
 
 Mat createGrayscale(const Mat& image) {
     Mat gray_image;
@@ -202,19 +239,44 @@ Mat createGrayscale(const Mat& image) {
     return gray_image;
 }
 
-Mat halftoning(int widthCell, int heightCell, Mat& image) {
-    Mat outputImage(image.rows * heightCell, image.cols * widthCell, CV_8UC1, Scalar(255));
+Mat halftoning(int widthCell, Mat& image) {
+    int initialRows = image.rows;
+    double aspectRatio = (double)image.cols / image.rows;
+    int newWidth = image.cols * widthCell;
+    int newHeight = (int)(newWidth / aspectRatio);
+    int heightCell = (int)(newHeight / initialRows);
+
+    Mat outputImage(newHeight, newWidth, CV_8UC1, Scalar(255));
 
     for (int y = 0; y < image.rows; ++y) {
         for (int x = 0; x < image.cols; ++x) {
-            uchar pixelValue = (255 - image.at<uchar>(y, x));
+            Vec3b inititalPixel = image.at<Vec3b>(y, x);
 
-            int radius = (int)(pixelValue * min(widthCell, heightCell) / 255.0 * 0.5);
+            uchar brightness = 0.299 * inititalPixel[2] + 0.587 * inititalPixel[1] + 0.114 * inititalPixel[0];
+
+            uchar pixelValue = (255 - brightness);
+
+            double part = pixelValue / 255.0;
+
+            int width  = (int)(widthCell * part);
+            int height = (int)(heightCell * part);
 
             int centerX = x * widthCell + widthCell / 2;
             int centerY = y * heightCell + heightCell / 2;
 
-            circle(outputImage, Point(centerX, centerY), radius, Scalar(0), FILLED);
+            int startX = centerX - width / 2;
+            int startY = centerY - height / 2;
+
+            int endX = min(startX + width, newWidth);
+            int endY = min(startY + height, newHeight);
+            int startXCorrected = max(startX, 0);
+            int startYCorrected = max(startY, 0);
+
+            for (int i = startYCorrected; i < endY; ++i) {
+                for (int j = startXCorrected; j < endX; ++j) {
+                    outputImage.at<uchar>(i, j) = 0;
+                }
+            }
         }
     }
 
